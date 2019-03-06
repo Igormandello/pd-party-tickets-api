@@ -1,0 +1,12 @@
+repositories {
+  maven { url "http://dl.bintray.com/kotlin/ktor" }
+}
+
+dependencies {
+  implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+  compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"
+  compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
+  compile "io.ktor:ktor-jackson:$ktorVersion"
+  compile "io.ktor:ktor-server-netty:$ktorVersion"
+  compile "ch.qos.logback:logback-classic:$logbackVersion"
+}

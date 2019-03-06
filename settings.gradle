@@ -1,2 +1,6 @@
 rootProject.name = 'pd-party-tickets-api'
 
+String[] modules = [
+    'pd-party-tickets-api-server'
+]
+include modules
