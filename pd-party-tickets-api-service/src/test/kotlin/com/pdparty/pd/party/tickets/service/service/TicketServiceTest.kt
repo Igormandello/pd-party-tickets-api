@@ -7,7 +7,6 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 import kotlin.test.assertFailsWith
 
 class TicketServiceTest : Spek({

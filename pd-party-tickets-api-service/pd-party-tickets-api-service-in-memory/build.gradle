@@ -1,0 +1,4 @@
+dependencies {
+  compile project(':pd-party-tickets-api-service')
+  compile project(':pd-party-tickets-api-service').sourceSets.test.output
+}
