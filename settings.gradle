@@ -3,6 +3,7 @@ rootProject.name = 'pd-party-tickets-api'
 String[] modules = [
     'pd-party-tickets-api-server',
     'pd-party-tickets-api-service',
-    'pd-party-tickets-api-service:pd-party-tickets-api-service-in-memory'
+    'pd-party-tickets-api-service:pd-party-tickets-api-service-in-memory',
+    'pd-party-tickets-api-request'
 ]
 include modules
