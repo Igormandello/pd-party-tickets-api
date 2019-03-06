@@ -4,23 +4,31 @@ import com.pdparty.pd.party.tickets.service.dao.TicketDAO
 import com.pdparty.pd.party.tickets.service.model.Ticket
 
 class InMemoryTicketDAO : TicketDAO {
-  override suspend fun insert(ticket: Ticket) {
-    TODO("not implemented")
+  private val tickets = mutableListOf<Ticket>()
+
+  override suspend fun insert(newTicket: Ticket) {
+    if (!this.tickets.any { it.id == newTicket.id }) {
+      tickets.add(newTicket)
+    }
   }
 
   override suspend fun update(ticket: Ticket) {
-    TODO("not implemented")
+    val index = this.tickets.indexOfFirst { it.id == ticket.id }
+    if (index >= 0) {
+      this.tickets[index] = ticket
+    }
   }
 
   override suspend fun delete(ticketId: String) {
-    TODO("not implemented")
+    val index = this.tickets.indexOfFirst { it.id == ticketId }
+    if (index >= 0) {
+      this.tickets.removeAt(index)
+    }
   }
 
-  override suspend fun find(ticketId: String): Ticket? {
-    TODO("not implemented")
-  }
+  override suspend fun find(ticketId: String): Ticket? =
+    this.tickets.firstOrNull { it.id == ticketId }
 
-  override suspend fun findAll(): List<Ticket> {
-    TODO("not implemented")
-  }
+  override suspend fun findAll(): List<Ticket> =
+    this.tickets.toList()
 }
