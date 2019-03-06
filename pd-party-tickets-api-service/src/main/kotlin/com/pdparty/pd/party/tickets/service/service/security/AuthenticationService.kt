@@ -7,9 +7,12 @@ import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.pdparty.pd.party.tickets.service.model.User
 import com.pdparty.pd.party.tickets.service.service.UserService
+import java.nio.charset.Charset
 import java.time.Duration
 import java.time.Instant
 import java.util.*
+import kotlin.random.Random
+import kotlin.random.nextUBytes
 
 class AuthenticationService(private val userService: UserService) {
   suspend fun authenticate(request: AuthRequest): User? {
@@ -22,6 +25,20 @@ class AuthenticationService(private val userService: UserService) {
     }
 
     return user
+  }
+
+  suspend fun signup(request: SignupRequest) {
+    var user = userService.find(request.username)
+    require(user == null) { "That username already exists." }
+
+    val salt = String(Random.nextUBytes(32).toByteArray())
+    val newUser = User(
+      username = request.username,
+      password = Hasher.hashPassword(request.password, salt),
+      salt = salt
+    )
+
+    userService.insertUser(newUser) 
   }
 
   fun createToken(user: User): String =

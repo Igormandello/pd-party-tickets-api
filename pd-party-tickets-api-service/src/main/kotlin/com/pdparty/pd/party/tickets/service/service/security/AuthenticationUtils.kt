@@ -6,9 +6,10 @@ import java.security.MessageDigest
 
 val JWT_SECRET: String = ConfigFactory.load().getConfig("authentication").getString("secret")
 
-data class SecurityContext(val user: User)
-
 data class AuthRequest(val username: String, val password: String)
+data class SignupRequest(val username: String, val password: String)
+
+data class SecurityContext(val user: User)
 
 object Hasher {
   fun hashPassword(password: String, salt: String): String =
