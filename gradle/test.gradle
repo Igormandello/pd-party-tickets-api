@@ -12,6 +12,7 @@ subprojects { project ->
   project.apply(plugin: org.junit.platform.gradle.plugin.JUnitPlatformPlugin)
 
   repositories {
+    maven { url 'https://dl.bintray.com/mockito/maven' }
     maven { url 'https://dl.bintray.com/jetbrains/spek' }
   }
 
@@ -24,10 +25,16 @@ subprojects { project ->
   }
 
   dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinXVersion"
+
     testCompile "org.jetbrains.spek:spek-api:$spekVersion"
     testRuntime "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"
     testRuntime "org.junit.platform:junit-platform-gradle-plugin:$junitPlatformVersion"
 
     testCompile "com.winterbe:expekt:$expektVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
   }
 }
