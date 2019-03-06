@@ -10,6 +10,10 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.*
 import io.ktor.util.pipeline.PipelineContext
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 fun Route.ticketRoute(ticketService: TicketService) {
   route("ticket") {
@@ -39,7 +43,18 @@ fun Route.ticketRoute(ticketService: TicketService) {
     }
 
     get {
-      call.respond(ticketService.findAll())
+      val wait = call.request.queryParameters["wait"]
+
+      if (wait == null) {
+        call.respond(ticketService.findAll())
+      } else {
+        val currentHash = ticketService.findAll().hashCode()
+        while (ticketService.findAll().hashCode() == currentHash) {
+          delay(1000)
+        }
+
+        call.respond( ticketService.findAll())
+      }
     }
 
     post {
