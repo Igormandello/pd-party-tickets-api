@@ -1,0 +1,33 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "org.junit.platform:junit-platform-gradle-plugin:$junitPlatformVersion"
+  }
+}
+
+subprojects { project ->
+  project.apply(plugin: org.junit.platform.gradle.plugin.JUnitPlatformPlugin)
+
+  repositories {
+    maven { url 'https://dl.bintray.com/jetbrains/spek' }
+  }
+
+  junitPlatform {
+    filters {
+      engines {
+        include "spek"
+      }
+    }
+  }
+
+  dependencies {
+    testCompile "org.jetbrains.spek:spek-api:$spekVersion"
+    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"
+    testRuntime "org.junit.platform:junit-platform-gradle-plugin:$junitPlatformVersion"
+
+    testCompile "com.winterbe:expekt:$expektVersion"
+  }
+}
