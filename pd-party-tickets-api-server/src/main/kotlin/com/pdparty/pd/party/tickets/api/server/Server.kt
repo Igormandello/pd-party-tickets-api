@@ -12,6 +12,7 @@ import io.ktor.application.install
 import io.ktor.features.CORS
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
@@ -48,6 +49,24 @@ class Server(port: Int = 8080) {
           indentArraysWith(DefaultPrettyPrinter.FixedSpaceIndenter.instance)
           indentObjectsWith(DefaultIndenter("  ", "\n"))
         })
+      }
+    }
+
+    install(StatusPages) {
+      data class ExceptionMessageWrapper (val message: String)
+
+      exception<IllegalArgumentException> { cause ->
+        var message = ""
+        cause.message?.let { message = it }
+        call.respond(HttpStatusCode.BadRequest, ExceptionMessageWrapper(message))
+      }
+
+      exception<NullPointerException> {
+        call.respond(HttpStatusCode.BadRequest, ExceptionMessageWrapper("Resource not found."))
+      }
+
+      exception<Throwable> {
+        call.respond(HttpStatusCode.InternalServerError, ExceptionMessageWrapper("Unkwnown error."))
       }
     }
 
