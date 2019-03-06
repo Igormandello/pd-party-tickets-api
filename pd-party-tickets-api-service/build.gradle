@@ -1,0 +1,4 @@
+dependencies {
+  compile "com.auth0:java-jwt:$javaJwtVersion"
+  compile "com.typesafe:config:$typeSafeVersion"
+}
