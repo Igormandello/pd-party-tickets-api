@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun Route.ticketRoute(ticketService: TicketService) {
+fun Route.ticket(ticketService: TicketService) {
   route("ticket") {
     route("{id}") {
       fun PipelineContext<Unit, ApplicationCall>.getId(): String = call.parameters["id"]!!
