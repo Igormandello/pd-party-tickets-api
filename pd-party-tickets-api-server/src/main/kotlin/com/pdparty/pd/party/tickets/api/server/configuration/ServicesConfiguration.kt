@@ -21,7 +21,7 @@ object ServicesConfiguration {
   init {
     runBlocking {
       val adminConfig = ConfigFactory.load().getConfig("admin")
-      
+
       authenticationService.signup(
         SignupRequest(
           adminConfig.getString("username"),

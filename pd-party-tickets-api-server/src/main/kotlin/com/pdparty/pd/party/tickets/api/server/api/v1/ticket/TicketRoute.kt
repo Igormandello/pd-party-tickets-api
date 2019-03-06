@@ -2,7 +2,9 @@ package com.pdparty.pd.party.tickets.api.server.api.v1.ticket
 
 import com.pdparty.pd.party.tickets.api.request.ticket.TicketPostRequest
 import com.pdparty.pd.party.tickets.api.request.ticket.TicketPutRequest
+import com.pdparty.pd.party.tickets.api.server.middleware.authenticationMiddleware
 import com.pdparty.pd.party.tickets.service.service.TicketService
+import com.pdparty.pd.party.tickets.service.service.security.AuthenticationService
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -15,8 +17,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun Route.ticket(ticketService: TicketService) {
+fun Route.ticket(ticketService: TicketService, authenticationService: AuthenticationService) {
   route("ticket") {
+    authenticationMiddleware(authenticationService)
+
     route("{id}") {
       fun PipelineContext<Unit, ApplicationCall>.getId(): String = call.parameters["id"]!!
 

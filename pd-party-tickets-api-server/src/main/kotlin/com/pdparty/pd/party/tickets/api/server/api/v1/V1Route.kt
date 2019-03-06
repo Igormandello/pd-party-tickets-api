@@ -11,8 +11,8 @@ import io.ktor.routing.route
 
 fun Route.v1() {
   route("v1") {
-    ticket(ticketService)
-    user(userService)
+    ticket(ticketService, authenticationService)
+    user(userService, authenticationService)
     auth(authenticationService)
   }
 }
