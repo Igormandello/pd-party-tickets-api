@@ -38,7 +38,7 @@ class AuthenticationService(private val userService: UserService) {
       salt = salt
     )
 
-    userService.insertUser(newUser) 
+    userService.insertUser(newUser)
   }
 
   fun createToken(user: User): String =
