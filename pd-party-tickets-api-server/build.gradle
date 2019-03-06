@@ -3,6 +3,10 @@ repositories {
 }
 
 dependencies {
+  compile project(":pd-party-tickets-api-service")
+  compile project(":pd-party-tickets-api-service:pd-party-tickets-api-service-in-memory")
+  compile project(":pd-party-tickets-api-request")
+
   implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
   compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"
   compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"

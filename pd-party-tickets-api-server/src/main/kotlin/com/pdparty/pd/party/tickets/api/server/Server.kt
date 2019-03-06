@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.pdparty.pd.party.tickets.api.server.api.v1.v1
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.CORS
@@ -51,6 +52,8 @@ class Server(port: Int = 8080) {
     }
 
     routing {
+      v1()
+
       get("health") {
         call.respond(HttpStatusCode.OK)
       }
