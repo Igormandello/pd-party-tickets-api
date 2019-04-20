@@ -26,7 +26,7 @@ fun Route.ticket(ticketService: TicketService, authenticationService: Authentica
       fun PipelineContext<Unit, ApplicationCall>.getId(): String = call.parameters["id"]!!
 
       get {
-        val ticket = ticketService.find(this.getId(), this.securityContext())
+        val ticket = ticketService.find(this.getId())
         if (ticket == null)
           call.respond(HttpStatusCode.NotFound)
         else
@@ -58,13 +58,13 @@ fun Route.ticket(ticketService: TicketService, authenticationService: Authentica
           delay(1000)
         }
 
-        call.respond( ticketService.findAll())
+        call.respond(ticketService.findAll())
       }
     }
 
     post {
       val postRequest = call.receive<TicketPostRequest>()
-      ticketService.insertTicket(postRequest.toTicket())
+      ticketService.insertTicket(postRequest.toTicket(), this.securityContext())
 
       call.respond(HttpStatusCode.Created)
     }
