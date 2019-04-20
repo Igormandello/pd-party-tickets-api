@@ -6,7 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.pdparty.pd.party.tickets.service.model.User
+import com.pdparty.pd.party.tickets.service.service.TicketService
 import com.pdparty.pd.party.tickets.service.service.UserService
+import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.time.Duration
 import java.time.Instant
@@ -27,7 +29,7 @@ class AuthenticationService(private val userService: UserService) {
     return user
   }
 
-  suspend fun signup(request: SignupRequest) {
+  suspend fun signup(request: SignupRequest, securityContext: SecurityContext) {
     var user = userService.find(request.username)
     require(user == null) { "That username already exists." }
 
@@ -38,7 +40,7 @@ class AuthenticationService(private val userService: UserService) {
       salt = salt
     )
 
-    userService.insertUser(newUser)
+    userService.insertUser(newUser, securityContext)
   }
 
   fun createToken(user: User): String =
@@ -65,6 +67,8 @@ class AuthenticationService(private val userService: UserService) {
     val TOKEN_TTL: Duration = Duration.ofDays(30)
     val TOKEN_ALGORITHM: Algorithm = Algorithm.HMAC512(JWT_SECRET)
     val DECODER: JWTVerifier = (JWT.require(TOKEN_ALGORITHM) as JWTVerifier.BaseVerification).build(JWTClock())
+
+    private val logger = LoggerFactory.getLogger(TicketService::class.qualifiedName)
   }
 
   private class JWTClock : com.auth0.jwt.interfaces.Clock {

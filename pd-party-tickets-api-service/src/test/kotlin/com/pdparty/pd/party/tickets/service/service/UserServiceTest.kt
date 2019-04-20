@@ -1,6 +1,7 @@
 package com.pdparty.pd.party.tickets.service.service
 
 import com.nhaarman.mockitokotlin2.*
+import com.pdparty.pd.party.tickets.service.TestCommons.securityContext
 import com.pdparty.pd.party.tickets.service.TestCommons.user
 import com.pdparty.pd.party.tickets.service.dao.UserDAO
 import kotlinx.coroutines.runBlocking
@@ -20,7 +21,7 @@ class UserServiceTest : Spek({
   describe("an User Service") {
     it("should create a user") {
       runBlocking {
-        userService.insertUser(user)
+        userService.insertUser(user, securityContext)
         verify(mockUserDAO).insert(any())
       }
     }
@@ -29,7 +30,7 @@ class UserServiceTest : Spek({
       assertFailsWith<IllegalArgumentException> {
         runBlocking {
           whenever(mockUserDAO.find(eq(user.username))).thenReturn(user)
-          userService.insertUser(user)
+          userService.insertUser(user, securityContext)
         }
       }
     }
@@ -37,7 +38,7 @@ class UserServiceTest : Spek({
     it("should delete the user") {
       runBlocking {
         whenever(mockUserDAO.find(eq(user.username))).thenReturn(user)
-        userService.deleteUser(user.username)
+        userService.deleteUser(user.username, securityContext)
         verify(mockUserDAO).delete(any())
       }
     }
@@ -45,7 +46,7 @@ class UserServiceTest : Spek({
     it("should not delete a non existing user") {
       assertFailsWith<IllegalArgumentException> {
         runBlocking {
-          userService.deleteUser(user.username)
+          userService.deleteUser(user.username, securityContext)
         }
       }
     }

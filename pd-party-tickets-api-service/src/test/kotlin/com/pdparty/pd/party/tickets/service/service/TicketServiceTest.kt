@@ -1,6 +1,8 @@
 package com.pdparty.pd.party.tickets.service.service
 
 import com.nhaarman.mockitokotlin2.*
+import com.pdparty.pd.party.tickets.service.TestCommons
+import com.pdparty.pd.party.tickets.service.TestCommons.securityContext
 import com.pdparty.pd.party.tickets.service.TestCommons.ticket
 import com.pdparty.pd.party.tickets.service.dao.TicketDAO
 import kotlinx.coroutines.runBlocking
@@ -20,7 +22,7 @@ class TicketServiceTest : Spek({
   describe("a Ticket Service") {
     it("should create a Ticket") {
       runBlocking {
-        ticketService.insertTicket(ticket)
+        ticketService.insertTicket(ticket, securityContext)
         verify(mockTicketDAO).insert(any())
       }
     }
@@ -29,7 +31,7 @@ class TicketServiceTest : Spek({
       assertFailsWith<IllegalArgumentException> {
         runBlocking {
           whenever(mockTicketDAO.find(eq(ticket.id))).thenReturn(ticket)
-          ticketService.insertTicket(ticket)
+          ticketService.insertTicket(ticket, securityContext)
         }
       }
     }
@@ -37,7 +39,7 @@ class TicketServiceTest : Spek({
     it("should update the Ticket") {
       runBlocking {
         whenever(mockTicketDAO.find(eq(ticket.id))).thenReturn(ticket)
-        ticketService.updateTicket(ticket)
+        ticketService.updateTicket(ticket, securityContext)
         verify(mockTicketDAO).update(any())
       }
     }
@@ -45,7 +47,7 @@ class TicketServiceTest : Spek({
     it("should not update a non existing Ticket") {
       assertFailsWith<IllegalArgumentException> {
         runBlocking {
-          ticketService.updateTicket(ticket)
+          ticketService.updateTicket(ticket, securityContext)
         }
       }
     }
@@ -53,7 +55,7 @@ class TicketServiceTest : Spek({
     it("should delete the Ticket") {
       runBlocking {
         whenever(mockTicketDAO.find(eq(ticket.id))).thenReturn(ticket)
-        ticketService.deleteTicket(ticket.id)
+        ticketService.deleteTicket(ticket.id, securityContext)
         verify(mockTicketDAO).delete(any())
       }
     }
@@ -61,7 +63,7 @@ class TicketServiceTest : Spek({
     it("should not delete a non existing Ticket") {
       assertFailsWith<IllegalArgumentException> {
         runBlocking {
-          ticketService.deleteTicket(ticket.id)
+          ticketService.deleteTicket(ticket.id, securityContext)
         }
       }
     }

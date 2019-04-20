@@ -1,5 +1,6 @@
 package com.pdparty.pd.party.tickets.api.server.api.v1.auth
 
+import com.pdparty.pd.party.tickets.api.server.configuration.securityContext
 import com.pdparty.pd.party.tickets.api.server.middleware.authenticationMiddleware
 import com.pdparty.pd.party.tickets.service.service.security.AuthRequest
 import com.pdparty.pd.party.tickets.service.service.security.AuthenticationService
@@ -29,7 +30,7 @@ fun Route.auth(authenticationService: AuthenticationService) {
 
       post {
         val signupRequest = call.receive<SignupRequest>()
-        authenticationService.signup(signupRequest)
+        authenticationService.signup(signupRequest, this.securityContext())
 
         call.respond(HttpStatusCode.Created)
       }
