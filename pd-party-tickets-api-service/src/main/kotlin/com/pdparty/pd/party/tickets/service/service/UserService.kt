@@ -7,12 +7,14 @@ import org.slf4j.LoggerFactory
 
 class UserService(val userDAO: UserDAO) {
   suspend fun insertUser(user: User, securityContext: SecurityContext) {
+    logger.debug("User {} inserting user {}", securityContext.user.username, user.username)
     require(this.find(user.username) == null) { "A user with that username already exists." }
 
     userDAO.insert(user)
   }
 
   suspend fun deleteUser(username: String, securityContext: SecurityContext) {
+    logger.debug("User {} deleting user {}", securityContext.user.username, username)
     require(this.find(username) != null) { "Can't delete a non existing user." }
 
     userDAO.delete(username)
