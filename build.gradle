@@ -1,6 +1,6 @@
 allprojects {
     group 'com.pdparty'
-    version '1.0-SNAPSHOT'
+    version '1.0'
 
     repositories {
         mavenCentral()
@@ -32,12 +32,35 @@ subprojects {
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:$shadowVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
+
+dependencies {
+    compile project(":pd-party-tickets-api-server")
+}
+
+jar {
+    doFirst {
+        manifest {
+            if (!configurations.compile.isEmpty()) {
+                attributes(
+                    'Class-Path': configurations.compile.collect{ it.toURI().toString() }.join(' '),
+                    'Main-Class': 'com.pdparty.pd.party.tickets.api.server.ApplicationKt'
+                )
+            }
+        }
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
+mainClassName = 'com.pdparty.pd.party.tickets.api.server.ApplicationKt'
 
 apply from: 'gradle/test.gradle'
 sourceCompatibility = 1.8

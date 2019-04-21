@@ -80,6 +80,6 @@ class Server(port: Int = 8080) {
   }
 
   fun start() {
-    this.server.start()
+    this.server.start(wait = true)
   }
 }
