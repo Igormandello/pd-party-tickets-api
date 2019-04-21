@@ -22,15 +22,24 @@ object ServicesConfiguration {
 
   init {
     runBlocking {
-      val adminConfig = ConfigFactory.load().getConfig("admin")
-
-      authenticationService.signup(
-        SignupRequest(
-          System.getenv("ADMIN_USERNAME") ?: adminConfig.getString("username"),
-          System.getenv("ADMIN_PASSWORD") ?: adminConfig.getString("password")
-        ),
-        SecurityContext(User("root", "", ""))
-      )
+      try {
+        val adminConfig = ConfigFactory.load().getConfig("admin")
+        authenticationService.signup(
+          SignupRequest(
+            adminConfig.getString("username"),
+            adminConfig.getString("password")
+          ),
+          SecurityContext(User("root", "", ""))
+        )
+      } catch (ex: Exception) {
+        authenticationService.signup(
+          SignupRequest(
+            System.getenv("ADMIN_USERNAME"),
+            System.getenv("ADMIN_PASSWORD")
+          ),
+          SecurityContext(User("root", "", ""))
+        )
+      }
     }
   }
 }
