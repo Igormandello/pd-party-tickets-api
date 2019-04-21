@@ -26,8 +26,8 @@ object ServicesConfiguration {
 
       authenticationService.signup(
         SignupRequest(
-          adminConfig.getString("username"),
-          adminConfig.getString("password")
+          System.getenv("ADMIN_USERNAME") ?: adminConfig.getString("username"),
+          System.getenv("ADMIN_PASSWORD") ?: adminConfig.getString("password")
         ),
         SecurityContext(User("root", "", ""))
       )

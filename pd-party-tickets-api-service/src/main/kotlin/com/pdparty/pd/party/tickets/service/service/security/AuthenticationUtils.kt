@@ -4,7 +4,8 @@ import com.pdparty.pd.party.tickets.service.model.User
 import com.typesafe.config.ConfigFactory
 import java.security.MessageDigest
 
-val JWT_SECRET: String = ConfigFactory.load().getConfig("authentication").getString("secret")
+val JWT_SECRET: String = System.getenv("AUTHENTICATION_SECRET")
+  ?: ConfigFactory.load().getConfig("authentication").getString("secret")
 
 data class AuthRequest(val username: String, val password: String)
 data class SignupRequest(val username: String, val password: String)
