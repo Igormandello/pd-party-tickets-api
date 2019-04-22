@@ -7,6 +7,7 @@ data class TicketPutRequest(val date: Instant) {
   fun toTicket(id: String): Ticket =
       Ticket(
         id = id,
-        date = date
+        date = date,
+        anonymous = false
       )
 }
