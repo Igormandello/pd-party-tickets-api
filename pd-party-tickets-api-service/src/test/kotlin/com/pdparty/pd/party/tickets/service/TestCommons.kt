@@ -9,7 +9,8 @@ import java.util.Random
 object TestCommons {
   val ticket = Ticket(
     id = "0042",
-    date = Instant.now()
+    date = Instant.now(),
+    anonymous = false
   )
 
   val user = User(

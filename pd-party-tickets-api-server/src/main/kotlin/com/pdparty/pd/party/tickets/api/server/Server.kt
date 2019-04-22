@@ -39,6 +39,7 @@ class Server(port: Int = 8080) {
       jackson {
         enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
         disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)
+        disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
         registerModule(Jdk8Module())

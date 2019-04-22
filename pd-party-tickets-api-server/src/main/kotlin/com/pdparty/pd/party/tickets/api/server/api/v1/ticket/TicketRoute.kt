@@ -64,9 +64,15 @@ fun Route.ticket(ticketService: TicketService, authenticationService: Authentica
 
     post {
       val postRequest = call.receive<TicketPostRequest>()
-      ticketService.insertTicket(postRequest.toTicket(), this.securityContext())
+      val ticket = ticketService.insertTicket(postRequest.toTicket(), this.securityContext())
 
-      call.respond(HttpStatusCode.Created)
+      call.respond(HttpStatusCode.Created, ticket)
+    }
+
+    post("anonymous") {
+      val ticket = ticketService.insertAnonymousTicket(this.securityContext())
+
+      call.respond(HttpStatusCode.Created, ticket)
     }
   }
 }

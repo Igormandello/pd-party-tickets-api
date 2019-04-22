@@ -6,10 +6,13 @@ import com.pdparty.pd.party.tickets.service.model.Ticket
 class InMemoryTicketDAO : TicketDAO {
   private val tickets = mutableListOf<Ticket>()
 
-  override suspend fun insert(newTicket: Ticket) {
-    if (!this.tickets.any { it.id == newTicket.id }) {
-      tickets.add(newTicket)
+  override suspend fun insert(newTicket: Ticket): Ticket {
+    if (this.tickets.any { it.id == newTicket.id }) {
+      throw IllegalArgumentException("Duplicate ID")
     }
+
+    tickets.add(newTicket)
+    return newTicket
   }
 
   override suspend fun update(ticket: Ticket) {

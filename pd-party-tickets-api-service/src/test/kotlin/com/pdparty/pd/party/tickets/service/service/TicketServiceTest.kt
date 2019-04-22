@@ -5,6 +5,8 @@ import com.pdparty.pd.party.tickets.service.TestCommons
 import com.pdparty.pd.party.tickets.service.TestCommons.securityContext
 import com.pdparty.pd.party.tickets.service.TestCommons.ticket
 import com.pdparty.pd.party.tickets.service.dao.TicketDAO
+import com.pdparty.pd.party.tickets.service.model.Ticket
+import com.winterbe.expekt.should
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -33,6 +35,30 @@ class TicketServiceTest : Spek({
           whenever(mockTicketDAO.find(eq(ticket.id))).thenReturn(ticket)
           ticketService.insertTicket(ticket, securityContext)
         }
+      }
+    }
+
+    it("should create an anonymous ticket") {
+      runBlocking {
+        whenever(mockTicketDAO.findAll()).thenReturn(emptyList())
+        val anonymousTicket = ticketService.insertAnonymousTicket(securityContext)
+
+        anonymousTicket.should.satisfy {
+          it.id == "anonymous-000" && it.anonymous
+        }
+        verify(mockTicketDAO).insert(any())
+      }
+    }
+
+    it("should create a second anonymous ticket") {
+      runBlocking {
+        whenever(mockTicketDAO.findAll()).thenReturn(listOf(ticket.copy(id = "anonymous-000", anonymous = true)))
+        val anonymousTicket = ticketService.insertAnonymousTicket(securityContext)
+
+        anonymousTicket.should.satisfy {
+          it.id == "anonymous-001" && it.anonymous
+        }
+        verify(mockTicketDAO).insert(any())
       }
     }
 

@@ -3,7 +3,7 @@ package com.pdparty.pd.party.tickets.service.dao
 import com.pdparty.pd.party.tickets.service.model.Ticket
 
 interface TicketDAO {
-    suspend fun insert(ticket: Ticket)
+    suspend fun insert(ticket: Ticket): Ticket
 
     suspend fun update(ticket: Ticket)
 
