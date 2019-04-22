@@ -25,6 +25,12 @@ fun Route.auth(authenticationService: AuthenticationService) {
         call.respond(HttpStatusCode.Forbidden)
     }
 
+    route("verify") {
+      authenticationMiddleware(authenticationService)
+
+      post { call.respond(HttpStatusCode.OK) }
+    }
+
     route("signup") {
       authenticationMiddleware(authenticationService)
 
